@@ -146,7 +146,7 @@ git add .
 git commit -m "Complete implementation of Zangoh AI Agent Supervisor Workstation"
 
 # Link your GitHub repository
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git remote add origin https://github.com/Kunalsahuji/zangoh-test.git
 
 # Push to main branch
 git branch -M main
@@ -166,12 +166,12 @@ zip -r submission.zip . -x "node_modules/*" "*/node_modules/*" ".git/*"
 - 📷 **UI Snapshots & Localhost Screenshots**: Stored in [`docs/snapshots`](./docs/snapshots) directory for evaluator inspection.
 - 🎤 **Video Recording Script**: Stored in [`docs/README.md`](./docs/README.md) with word-for-word 2-minute English walkthrough script by **Kunal Sahu**.
 - 🚀 **Video Demo Link**: *(Add your video link here or place video file inside `docs/snapshots`)*  
-- 📂 **GitHub Repository**: [github.com/Kunalsahuji](https://github.com/Kunalsahuji)
+- 📂 **GitHub Repository**: [https://github.com/Kunalsahuji/zangoh-test](https://github.com/Kunalsahuji/zangoh-test)
 
 ---
 
 ## 🤝 Connect with Me
-📦 GitHub: [github.com/Kunalsahuji](https://github.com/Kunalsahuji)  
+📦 GitHub: [https://github.com/Kunalsahuji/zangoh-test](https://github.com/Kunalsahuji/zangoh-test)  
 🔗 LinkedIn: [linkedin.com/in/kunal-sahu-7688ba1b0](https://linkedin.com/in/kunal-sahu-7688ba1b0)  
 📌 Notion: [Watch my content](https://www.notion.so/1dff7c6ce1bb803787fbddd34e422ab4?v=1e0f7c6ce1bb8052b14c000cb57448ee&pvs=4)  
 📧 Email: [ksahu0103@gmail.com](mailto:ksahu0103@gmail.com)  

@@ -8,6 +8,7 @@ This directory contains all **UI Screenshots**, **Localhost Snapshots**, and **V
 
 - **📷 UI Snapshots & Screenshots**: Located in [`docs/snapshots`](./snapshots) directory.
 - **🎥 Walkthrough Video**: Located in [`docs/snapshots`](./snapshots) or linked below.
+- **📂 GitHub Repository**: [https://github.com/Kunalsahuji/zangoh-test](https://github.com/Kunalsahuji/zangoh-test)
 
 ---
 
