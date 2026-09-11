@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+*/node_modules/
+frontend-starter/node_modules/
+backend-starter/node_modules/
+
+# Environment files
+.env.local
+.env.development.local
+
+# Build output
+build/
+dist/
+
+# OS & Temp files
+.DS_Store
+__MACOSX/
+__MACOSX*
+*.log
+*.zip
