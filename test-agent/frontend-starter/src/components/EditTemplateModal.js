@@ -1,205 +1,28 @@
-// src/components/EditTemplateModal.js
-import React, { useState, useEffect } from 'react';
+import React, { wstate, useEffect } from 'react';
 import {
   Modal,
   ModalOverlay,
   ModalContent,
+  ModalHeader,
   ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Button,
   Box,
   Flex,
   Text,
   Input,
-  Button,
-  VStack,
-  HStack,
-  Badge,
   Select,
+  Switch,
+  FormControl,
+  FormLabel,
   Textarea,
-  Grid,
+  Badge,
+  HStack,
+  VStack,
   useToast,
 } from '@chakra-ui/react';
-import { FiCheck } from 'react-icons/fi';
+import { FiEdit3, FiPlus, FiTag, FiUsers } from 'react-icons/fi';
 
-const EditTemplateModal = ({ isOpen, onClose, template, onSaveTemplate }) => {
-  const toast = useToast();
-  const [name, setName] = useState('');
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Chat');
-  const [content, setContent] = useState('');
-  const [isShared, setIsShared] = useState(true);
-
-  useEffect(() => {
-    if (template) {
-      setName(template.name || 'Welcome Template');
-      setTitle(template.title || 'Say Hi to welcome new visitors!');
-      setCategory(template.category || 'Chat');
-      setContent(template.rawText || 'Hi <user name>! Welcome to <company name>. How may I be of help today?');
-    } else {
-      setName('');
-      setTitle('Say Hi to welcome new visitors!');
-      setCategory('Chat');
-      setContent('Hi <user name>! Welcome to <company name>. How may I be of help today?');
-    }
-  }, [template, isOpen]);
-
-  const handleSave = () => {
-    onSaveTemplate({
-      ...template,
-      name,
-      title,
-      category,
-      rawText: content,
-      resolvedText: content.replace('<user name>', 'Elena').replace('<company name>', 'Acme'),
-    });
-    toast({
-      title: "Template Saved",
-      description: "Changes saved successfully.",
-      status: "success",
-      duration: 2500,
-    });
-    onClose();
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} size="5xl" isCentered>
-      <ModalOverlay bg="blackAlpha.600" backdropFilter="blur(2px)" />
-      <ModalContent borderRadius="20px" overflow="hidden" p={0} maxW="950px">
-        <ModalBody p={6}>
-          <Grid templateColumns="1.2fr 1fr" gap={6} minH="480px">
-            {/* LEFT FORM COLUMN */}
-            <VStack spacing={4} align="stretch">
-              <Text fontWeight="800" fontSize="lg" color="#1E1E2D">
-                {template ? 'Edit Template' : 'Create Template'}
-              </Text>
-
-              {/* Name */}
-              <Box>
-                <Text fontSize="xs" fontWeight="700" color="gray.500" mb={1}>
-                  Name
-                </Text>
-                <Input 
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Template name" 
-                  size="sm"
-                  borderRadius="8px"
-                  fontSize="xs"
-                />
-              </Box>
-
-              {/* Title */}
-              <Box>
-                <Text fontSize="xs" fontWeight="700" color="gray.500" mb={1}>
-                  Title
-                </Text>
-                <Input 
-                  value={title} 
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Say Hi to welcome new visitors!" 
-                  size="sm"
-                  borderRadius="8px"
-                  fontSize="xs"
-                />
-              </Box>
-
-              {/* Category */}
-              <Box>
-                <Text fontSize="xs" fontWeight="700" color="gray.500" mb={1}>
-                  Category
-                </Text>
-                <Select 
-                  value={category} 
-                  onChange={(e) => setCategory(e.target.value)}
-                  size="sm"
-                  borderRadius="8px"
-                  fontSize="xs"
-                >
-                  <option value="Chat">Chat</option>
-                  <option value="Onboarding">Onboarding</option>
-                  <option value="Billing">Billing</option>
-                  <option value="Support">Support</option>
-                </Select>
-              </Box>
-
-              {/* Content Field */}
-              <Box>
-                <Text fontSize="xs" fontWeight="700" color="gray.500" mb={1}>
-                  Content
-                </Text>
-
-                {/* Toolbar mockup */}
-                <HStack spacing={1} bg="gray.50" borderTopRadius="8px" p={1.5} border="1px solid" borderColor="gray.200" borderBottom="none" fontSize="11px">
-                  <Button size="xs" variant="ghost" px={1}>↺</Button>
-                  <Button size="xs" variant="ghost" px={1}>↻</Button>
-                  <Text fontSize="10px" color="gray.500" px={1}>Sans Serif ▾</Text>
-                  <Button size="xs" variant="ghost" px={1} fontWeight="bold">B</Button>
-                  <Button size="xs" variant="ghost" px={1} fontStyle="italic">I</Button>
-                  <Button size="xs" variant="ghost" px={1} as="u">U</Button>
-                </HStack>
-
-                <Textarea 
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  borderTopRadius={0}
-                  borderBottomRadius="8px"
-                  fontSize="xs"
-                  rows={4}
-                  borderColor="gray.200"
-                  _focus={{ borderColor: '#6E26D5', boxShadow: 'none' }}
-                />
-              </Box>
-
-              {/* Action Buttons */}
-              <HStack spacing={3} pt={2}>
-                <Button 
-                  size="sm" 
-                  bg={isShared ? '#6E26D5' : 'gray.200'} 
-                  color="white" 
-                  borderRadius="8px" 
-                  leftIcon={<FiCheck />}
-                  fontSize="xs"
-                  onClick={() => setIsShared(!isShared)}
-                >
-                  Share with Team
-                </Button>
-
-                <Spacer />
-
-                <Button size="sm" variant="outline" borderRadius="8px" onClick={onClose} fontSize="xs">
-                  Cancel
-                </Button>
-                <Button size="sm" bg="#3C2A58" color="white" borderRadius="8px" onClick={handleSave} fontSize="xs" _hover={{ bg: '#513B73' }}>
-                  Save
-                </Button>
-              </HStack>
-            </VStack>
-
-            {/* RIGHT PREVIEW COLUMN */}
-            <Box bg="#F8F9FC" p={5} borderRadius="16px" border="1px solid" borderColor="gray.100" display="flex" flexDirection="column">
-              <Text fontWeight="800" fontSize="sm" color="#1E1E2D" mb={6}>
-                Preview
-              </Text>
-
-              {/* Rendered Preview Card */}
-              <Box bg="white" p={4} borderRadius="12px" border="1px solid" borderColor="gray.200" boxShadow="xs" my="auto">
-                <HStack spacing={2} mb={2}>
-                  <Badge borderRadius="md" px={2} py={0.5} bg="#ECE3FC" color="#6E26D5" fontSize="10px">
-                    + {category}
-                  </Badge>
-                </HStack>
-
-                <Text fontSize="xs" color="#1E1E2D" lineHeight="1.5">
-                  {content}
-                </Text>
-              </Box>
-            </Box>
-          </Grid>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  );
-};
-
-const Spacer = () => <Box flex="1" />;
-
-export default EditTemplateModal;
+const EditTemplateModal = ({ isOpen, onClose, template, onSave }) => {
+  const [V'�z�WB�6WDf�&�FF��W6U7FFR���F�F�S�rr��6FVv�'��w6����rr��6��FV�C�rr���56�&VC�G'VR��ғ��6��7BF�7B�W6UF�7B�����W6TVffV7B��������b�FV��FR���6WDf�&�FF���F�F�S�FV��FR�F�F�R��rr��6FVv�'��FV��FR�6FVv�'���w6����rr��6��FV�C�FV��FR�6��FV�B��rr���56�&VC�FV��FR�56�&VB��V�FVf��VB�FV��FR�56�&VB�G'VR��ғ���V�6R��6WDf�&�FF���F�F�S�rr��6FVv�'��w6����rr��6��FV�C�t����7W7F��W%���W�����W"�&FW"���&FW%��G���2���r���56�&VC�G'VR��ғ��Т���FV��FR��4�V�ғ���6��7B��F�T��6W'Ef&�&�R��f$��R�����6WDf�&�FF��&Wb��������&Wb��6��FV�C�&Wb�6��FV�B�rr�w��r�f$��R�w��r��Ғ���Ӱ��6��7B��F�U7V&֗B�7��2�������b�f�&�FF�F�F�R��f�&�FF�6��FV�B���F�7B���F�F�S�t֗76��rf�V�G2r��FW67&�F���u�V6R&�f�FR&�F�F�F�R�B6��FV�Br��7FGW3�vW'&�"r��GW&F���3���46��6&�S�G'VR��ғ��&WGW&㰢Тv�B��6fR�f�&�FF�����6��6R����Ӱ��6��7BvWE&Wf�WuFW�B��������WBB�f�&�FF�6��FV�B��s��B�B�&W�6R���ǵ��6��U��2��������r�tV�V�f7VW�r���B�B�&W�6R���ǵ��67W7F��W%���U��2��������r�tV�V�f7VW�r���B�B�&W�6R���ǵ��6�&FW%��E��2��������r�r3�C#�r���B�B�&W�6R���ǵ��7G&6���u��V�&W%��2��������r�uE$�ӓ�scSC2r���B�B�&W�6R���ǵ��7&VgV�E���V�E��2��������r�|*s#C��r���&WGW&�C��Ӱ��&WGW&������F��4�V�׶�4�V����6��6S׶��6��6W�6��S�'��"�46V�FW&VC����F��fW&��&s�&&�6����c"�����F�6��FV�B&�&FW%&F�W3�##�"�fW&f��s�&��FFV�#����FĆVFW"&s�"343$S�"6���#�'v��FR"�׳7�f��E6��S�&�B"f��EvV�v�C�#s#��f�W�Ɩv��&6V�FW""v׳'���&��ϴf�VF�C7�6���#�"4s�$d"6��S�#��"���FW�C�FV��FR�tVF�B&W7��6RFV��FRr�t7&VFR�Wr&W7��6RFV��FRw���FW�C���f�W������FĆVFW#����F�6��6T'WGF��6���#�'v��FR"F��#G�"�ࠢ���F�&�G�׳W�&s�&w&��S#��e7F6�76��s׳G�Ɩv��'7G&WF6�#��f�&�6��G&���5&WV�&VC��f�&��&V�f��E6��S�'�2"f��EvV�v�C�#s"6���#�&w&��C"FW�EG&�6f�&��'WW&66R#�FV��FRF�F�P���f�&��&V��Ė�W@�&s�'v��FR �&�&FW%&F�W3�#� ��6V���FW#�&R�r��&FW"7FGW2bG&6���rFWF��2 �f�VS׶f�&�FF�F�F�WТ��6��vSײ�R���6WDf�&�FF�����f�&�FF�F�F�S�R�F&vWB�f�VRҗТ����f�&�6��G&��ࠢ�f�W�v׳G�F�&V7F���׷�&6S�v6��V��r�6Ӣw&�rr����f�&�6��G&��f�W��##��f�&��&V�f��E6��S�'�2"f��EvV�v�C�#s"6���#�'&��C"FW�EG&�6f�&��'WW&66R#�6FVv�'����f�&��&V���6V�V7@�&s�'v��FR �&�&FW%&F�W3�#� �f�VS׶f�&�FF�6FVv�'�Т��6��vSײ�R���6WDf�&�FF�����f�&�FF�6FVv�'��R�F&vWB�f�VRҗТ���F���f�VS�'6����r#�6����rbFVƗfW'����F������F���f�VS�'&WGW&�2#�&WGW&�2b&VgV�G3���F������F���f�VS�&&��Ɩ�r#�&��Ɩ�rb��V�G3���F������F���f�VS�'FV6��6�#�FV6��6�7W�'C���F������F���f�VS�&vV�W&�#�vV�W&���V�'����F������6V�V7C���f�&�6��G&��ࠢ�f�&�6��G&��f�W��##��f�&��&V�f��E6��S�'�2"f��EvV�v�C�#s"6���#�'&��C"FW�EG&�6f�&��'WW&66R#�FV�6�&��p���f�&��&V���f�W�Ɩv��&6V�FW""v׳7�&s�'v��FR"׳"�W�&�&FW%&F�W3�#�"&�&FW#�#�6�ƖB"&�&FW$6���#�&w&��##��7v�F6��6���%66�V�S�'W'�R ��46�V6�VC׶f�&�FF�56�&VGТ��6��vSײ�R���6WDf�&�FF�����f�&�FF��56�&VC�R�F&vWB�6�V6�VBҗТ���FW�Bf��E6��S�'�2"f��EvV�v�C�#c"6���#�&w&��s#��f�&�FF�56�&VB�w6�&VBv�F�V�F�&R7WW'f�6�"FV�r�u&�fFRF��RwТ��FW�C���f�W����f�&�6��G&�����f�W�ࠢ�f�&�6��G&���5&WV�&VC��f�W��W7F�g��'76R�&WGvVV�"Ɩv��&6V�FW""�#׳���f�&��&V�f��E6��S�'�2"f��EvV�v�C�#s"6���#�&w&��C"FW�EG&�6f�&��'WW&66R"�#��FV��FR6��FV�B���6�VFR��f&�&�U���W�Ґ���f�&��&V��ą7F6�76��s׳������S�v7W7F��W%���Rr�Gv��v�&FW%��Br�F�&VS�wG&6���u��V�&W"r�f�W#�w&VgV�E���V�Bu�����f$�W�������'WGF���W�׷f$�W�Т6��S�'�2 �&�&FW%&F�W3�&gV�� �&s�"4TTc$db �6���#�"3DcCDSR ����fW#׷�&s�r43tCtdRr�Т��6Ɩ6�ײ������F�T��6W'Ef&�&�R�f$�W��Т�����f&�W���Т��'WGF�����Т��7F6����f�W���FW�F&V�&s�'v��FR �&�&FW%&F�W3�#� �&�w3׳GТ�6V���FW#�'G�R��W"6��VB&W7��6R�W6R��f&�&�U���W��f�"G��֖2f�V�G2� �f�VS׶f�&�FF�6��FV�GТ��6��vSײ�R���6WDf�&�FF�����f�&�FF�6��FV�C�R�F&vWB�f�VRҗТ����f�&�6��G&��ࠢ�&��&s�"4c4cdb"׳G�&�&FW%&F�W3�#G�"&�&FW#�#�6�ƖB"&�&FW$6���#�"4C�#DdR#��f�W��W7F�g��'76R�&WGvVV�"Ɩv��&6V�FW""�#׳'���FW�Bf��EvV�v�C�#s"f��E6��S�'�2"6���#�"3dS#dCR#�)�ƗfR6��R&Wf�Wp���FW�C��&FvR6���%66�V�S�'W'�R"&�&FW%&F�W3�&gV��"f��E6��S�#�#�WF��&W6��fV@���&FvS���f�W���FW�Bf��E6��S�'6�"6���#�"3SS$B"v��FU76S�'&R�w&"f��EvV�v�C�#S#��vWE&Wf�WuFW�B��Т��FW�C���&�����e7F6������F�&�G�ࠢ���F�f��FW"&s�'v��FR"&�&FW%F��#�6�ƖB"&�&FW$6���#�&w&��"�׳7���'WGF��f&��C�&v��7B"�#׳7���6Ɩ6�׶��6��6W�6��S�'6�"&�&FW%&F�W3�&gV��#�6�6V����'WGF����'WGF��&s�"3dS#dCR"6���#�'v��FR"���fW#׷�&s�r3T#T#br��6��S�'6�"&�&FW%&F�W3�&gV��"�׳W���6Ɩ6�׶��F�U7V&֗G���FV��FR�u6fR6��vW2r�t7&VFRFV��FRwТ��'WGF�������F�f��FW#�����FD6��FV�C�����F�����Ӱ��W��'BFVfV�BVF�EFV��FT��Fð

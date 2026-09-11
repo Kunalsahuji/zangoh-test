@@ -15,6 +15,7 @@ const agentsRoutes = require('./routes/agents');
 const knowledgeBaseRoutes = require('./routes/knowledgeBase');
 const analyticsRoutes = require('./routes/analytics');
 const interveneRoutes = require('./routes/intervene');
+const templatesRoutes = require('./routes/templates');
 
 // Middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -45,6 +46,40 @@ app.use('/api/agents', agentsRoutes);
 app.use('/api/knowledge-base', knowledgeBaseRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/intervene', interveneRoutes);
+app.use('/api/templates', templatesRoutes);
+// SSE Stream Endpoint for Live Dashboard Metrics (Updates every 2 seconds)
+app.get('/api/metrics/stream', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  if (res.flushHeaders) res.flushHeaders();
+
+  const sendMetrics = () => {
+    const baseActive = 1280 + Math.floor(Math.random() * 20 - 10);
+    const baseSla = 45 + Math.floor(Math.random() * 8 - 4);
+    const baseAi = (73 + Math.random() * 2).toFixed(1);
+    const sec = Math.floor(10 + Math.random() * 20);
+    const baseCsat = (8.5 + Math.random() * 0.4).toFixed(1);
+
+    const payload = {
+      activeLoad: { value: baseActive.toLocaleString(), change: '+8.2%' },
+      slaAtRisk: { value: baseSla.toString(), change: '+12' },
+      aiContainment: { value: baseAi + '%', change: '+4.1%' },
+      avgHandleTime: { value: '06:' + sec.toString().padStart(2, '0'), change: '-0:42' },
+      csat: { value: baseCsat.toString(), change: '+0.6' },
+      timestamp: new Date().toISOString()
+    };
+    res.write('data: ' + JSON.stringify(payload) + '\n\n');
+  };
+
+  sendMetrics();
+  const intervalId = setInterval(sendMetrics, 2000);
+
+  req.on('close', () => {
+    clearInterval(intervalId);
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
